@@ -36,18 +36,18 @@ function Get-SWZone {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
     }
     process {
         # If a $Name exists limit the search to it
         if ($Name) {
             $Resource = "$BaseResource/name/$Name"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).zone
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).zone
         }
         # If there are no parameters query for all zones
         else {
             $Resource = $BaseResource
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).$BaseResource
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).$BaseResource
         }
         # Return the result
         $Result

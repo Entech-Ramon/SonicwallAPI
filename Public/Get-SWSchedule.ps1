@@ -36,19 +36,19 @@ function Get-SWSchedule {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
 
     }
     process {
         # If a $Name exists limit the search to it
         if ($Name) {
             $Resource = "$BaseResource/name/$Name"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).schedule
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).schedule
         }
         # If there are no parameters query for all interfaces
         else {
             $Resource = "$BaseResource"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).$BaseResource
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).$BaseResource
         }
         # Return the result
         $Result

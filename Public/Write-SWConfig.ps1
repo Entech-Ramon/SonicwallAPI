@@ -24,12 +24,12 @@ function Write-SWConfig {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
     }
     process {
-            $PendingCheck = Invoke-RestMethod -Uri "$SWBaseUrl$BaseResource" -Method 'get' -ContentType $ContentType
+            $PendingCheck = Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$BaseResource" -Method 'get' -ContentType $ContentType
         if ($NULL -ne $PendingCheck) {
-            $Result = Invoke-RestMethod -Uri "$SWBaseUrl$BaseResource" -Method $Method -ContentType $ContentType
+            $Result = Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$BaseResource" -Method $Method -ContentType $ContentType
         }
         else {
             Write-host -ForegroundColor Green "No Pending Writes Found."

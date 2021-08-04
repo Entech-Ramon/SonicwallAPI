@@ -28,12 +28,12 @@
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
     }
     process {
         # Query for DNS config
         $Resource = "$BaseResource/global"
-        $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).botnet
+        $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).botnet
 
         # Return the result
         $Result

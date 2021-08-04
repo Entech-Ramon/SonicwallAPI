@@ -50,7 +50,7 @@ function Get-SWAddressGroup {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
     }
     process {
         switch ($PSCmdlet.ParameterSetName){
@@ -67,7 +67,7 @@ function Get-SWAddressGroup {
                     # Build the resource
                     $Resource = "$BaseResource/$IpVersion"
                     # Query for address groups
-                    $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_groups.$IpVersion
+                    $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_groups.$IpVersion
                     $Result
                 }
             }
@@ -81,7 +81,7 @@ function Get-SWAddressGroup {
                     $Resource = "$BaseResource/$IpVersion/name/$Name"
                     # Try to make the request. If it works we exit the loop, if it fails it means that it doesn't exist in this $ObjectType, so we continue.
                     Try {
-                        $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_group.$IpVersion
+                        $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_group.$IpVersion
                         Break
                     }
                     Catch {

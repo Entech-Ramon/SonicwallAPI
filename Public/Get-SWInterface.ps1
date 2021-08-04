@@ -36,7 +36,7 @@ function Get-SWInterface {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
 
         # Declaring the IP version
         $IpVersion = 'ipv4'
@@ -45,12 +45,12 @@ function Get-SWInterface {
         # If a $Name exists limit the search to it
         if ($Name) {
             $Resource = "$BaseResource/$IpVersion/name/$Name"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).interface.$IpVersion
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).interface.$IpVersion
         }
         # If there are no parameters query for all interfaces
         else {
             $Resource = "$BaseResource/$IpVersion"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).$BaseResource.$IpVersion
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).$BaseResource.$IpVersion
         }
         # Return the result
         $Result

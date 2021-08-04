@@ -62,7 +62,7 @@ function Get-SWAddressObject {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
 
         # Building array of ip subtypes
         $IpSubTypes = 'host','range','network'
@@ -74,13 +74,13 @@ function Get-SWAddressObject {
                 if ($IpSubtypes -contains $Type) {
                     $Resource = "$BaseResource/$IpVersion"
                     # Querying for address objects
-                    $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_objects.$IpVersion | Where-Object {$_.PSobject.Properties.Name -contains $Type}
+                    $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_objects.$IpVersion | Where-Object {$_.PSobject.Properties.Name -contains $Type}
                 }
                 # If not just build the resource with the type
                 else {
                     $Resource = "$BaseResource/$Type"
                     # Querying for address objects
-                    $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_objects.$Type
+                    $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_objects.$Type
                 }
                 # Filter by name if introduced
                 if ($Name) {
@@ -98,7 +98,7 @@ function Get-SWAddressObject {
                     $Resource = "$BaseResource/$ObjectType/name/$Name"
                     # Try to make the request. If it works we exit the loop, if it fails it means that it doesn't exist in this $ObjectType, so we continue.
                     Try {
-                        $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_object.$ObjectType
+                        $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_object.$ObjectType
                         Break
                     }
                     Catch {
@@ -126,7 +126,7 @@ function Get-SWAddressObject {
                         $Resource = "$BaseResource/$ObjectType/name/$Name"
                         # Try to make the request. If it works we exit the loop, if it fails it means that it doesn't exist in this $ObjectType, so we continue.
                         Try {
-                            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_object.$ObjectType
+                            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).address_object.$ObjectType
                             $Result
                             Break
                         }

@@ -1,10 +1,10 @@
 # Tests if current SonicWall connection is valid
 Function Test-SWConnection {
     # If an existing connection exists we test it
-    if ($env:SWConnection) {
+    if ($Script:SWConnection) {
         Try {
             # Make a dummy request
-            Invoke-RestMethod -Uri "$($env:SWConnection)config/pending" -Method Get -ContentType 'application/json' | Out-Null
+            Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$($Script:SWConnection)config/pending" -Method Get -ContentType 'application/json' | Out-Null
         }
         Catch {
             # If we cannot connect to the previously established connection throw an error

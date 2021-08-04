@@ -25,7 +25,7 @@ function Set-SWGeoIP {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
 
         #Json Body
         $json = @{
@@ -39,7 +39,7 @@ function Set-SWGeoIP {
         } | ConvertTo-Json -Depth 4
     }
     process {
-        $Result = Invoke-RestMethod -Uri "$SWBaseUrl$BaseResource" -Method $Method -ContentType $ContentType -Body $Json 
+        $Result = Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$BaseResource" -Method $Method -ContentType $ContentType -Body $Json 
 
         # Return the result
         return $Result

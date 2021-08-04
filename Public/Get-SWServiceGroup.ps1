@@ -36,18 +36,18 @@ function Get-SWServiceGroup {
         $ContentType = 'application/json'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
     }
     process {
         # If a $Name exists limit the search to it
         if ($Name) {
             $Resource = "$BaseResource/name/$Name"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).service_group
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).service_group
         }
         # If there are no parameters query for all service groups
         else {
             $Resource = $BaseResource
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).service_groups
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).service_groups
         }
         # Return the result
         $Result

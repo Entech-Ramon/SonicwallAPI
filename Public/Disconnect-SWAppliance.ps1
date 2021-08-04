@@ -19,13 +19,13 @@ function Disconnect-SWAppliance {
     }
     process{
         # If there's no connection throw error
-        if (!$env:SWConnection) {
+        if (!$Script:SWConnection) {
             Throw 'Cannot disconnect, you are not connected to any SonicWall appliance.'
         }
 
         # Try to disconnect the session and delete the env variable
         try {
-            Invoke-RestMethod -Uri "$($env:SWConnection)$($Resource)" -Method $Method | Out-Null
+            Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$($Script:SWConnection)$($Resource)" -Method $Method | Out-Null
             Remove-Item env:SWConnection
         }
         # On error just delete the env variable

@@ -45,19 +45,19 @@ function Get-SWAccessRule {
         $IpVersions = 'ipv4', 'ipv6'
 
         # Getting the base URL of our connection
-        $SWBaseUrl = $env:SWConnection
+        $SWBaseUrl = $Script:SWConnection
     }
     process {
         # If we are not querying a certain ip type show it
         if ($IpVersion -ne 'all') {
             $Resource = "$BaseResource/$IpVersion"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).access_rules.$IpVersion
+            $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).access_rules.$IpVersion
         }
         # If we are querying all the types loop through them
         else {
             ForEach ($IpVersion in $IpVersions) {
                 $Resource = "$BaseResource/$IpVersion"
-                $Result += (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).access_rules.$IpVersion
+                $Result += (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).access_rules.$IpVersion
             }
         }
         # Return the result
