@@ -32,7 +32,7 @@
     }
     process {
         # Query for DNS config
-        $Resource = "$BaseResource/global"
+        $Resource = "$BaseResource/base"
         $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).botnet
 
         # Return the result

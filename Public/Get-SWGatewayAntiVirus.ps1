@@ -22,7 +22,7 @@
         $Method = 'get'
 
         # Declaring the base resource
-        $BaseResource = 'gateway-antivirus/settings'
+        $BaseResource = 'gateway-antivirus/base'
         
 
         # Declaring the content type

@@ -22,7 +22,7 @@
         $Method = 'get'
 
         # Declaring the base resource
-        $BaseResource = 'geo-ip'
+        $BaseResource = 'geo-ip/base'
 
         # Declaring the content type
         $ContentType = 'application/json'
