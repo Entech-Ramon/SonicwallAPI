@@ -33,7 +33,7 @@ function Get-SWConfig {
     process {
         # Query for DNS config
         $Resource = "$BaseResource"
-        $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -Headers $ContentType)
+        $Result = (Invoke-RestMethod -SkipCertificateCheck:$Script:IgnoreCert -Uri "$SWBaseUrl$Resource" -Method $Method -Headers $Headers)
 
         # Return the result
         $Result
