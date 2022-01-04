@@ -16,13 +16,13 @@ function Get-SWConfig {
         Test-SWConnection
         $Method = 'Get'
         $BaseResource = "config/$Type"
-        if($ReturnType = 'json') {
+        if($ReturnType -eq 'json') {
             $Headers = @{
                 Accept = 'application/json'
             }
         } 
         
-        if($ReturnType = 'text') {
+        if($ReturnType -eq 'text') {
             $Headers = @{
                 Accept = 'text/plain'
             }
